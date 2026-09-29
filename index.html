@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Always B There — Backbone 十週年故事牆</title>
+<meta name="description" content="這十年，你和 Backbone 的故事。上傳一張有 Backbone 相伴的空間照片與故事，12/31 前參與故事徵集，即有機會獲得萬元購物金。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Always B There — Backbone 十週年故事牆">
+<meta property="og:description" content="這十年，你和 Backbone 的故事。12/31 前參與故事徵集，即有機會獲得萬元購物金。">
+<meta property="og:image" content="/assets/og.jpg">
+<meta name="theme-color" content="#171917">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<!-- ===== INTRO：滿版，播完才進主頁（不可往下滑） ===== -->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-grid"></div>
+  <div class="fan" id="fan"><div class="stage" id="fanStage"></div></div>
+  <div class="rows" id="rows"></div>
+  <div class="intro-hud"><span id="introSec">01 / 線 → 面</span><button type="button" id="introSkip">SKIP →</button></div>
+</div>
+
+<header class="nav"><div class="wrap">
+  <a class="brand" href="#top" aria-label="Always B There 首頁">
+    <img src="/assets/wordmark-black.svg" alt="BACKBONE" class="wm" width="112" height="29">
+    <span class="mono">10TH · ALWAYS B THERE</span>
+  </a>
+  <nav aria-label="主選單">
+    <a href="#stories">故事牆</a><a href="#submit">我要投稿</a><a href="#rules">活動規則</a>
+    <a class="ext" id="mainSiteLink" href="#" target="_blank" rel="noopener">十週年主站 ↗</a>
+  </nav>
+</div></header>
+
+<main>
+<!-- ===== HERO ===== -->
+<section class="hm" id="top" aria-label="Always B There">
+  <div class="hm-grid"></div>
+  <div class="pile" id="pile" aria-hidden="true"></div>
+  <div class="hm-title" id="hmTitle"><div class="in">
+    <div class="hero-l">
+      <span class="eyebrow">Always B There — <b>Memory &amp; Gift</b></span>
+      <h1>這十年，<br>你和 <span class="hl-box">Backbone</span> 的故事。</h1>
+      <p>一件傢俱，匯聚了無數專注與蛻變的瞬間，<br>請上傳一張有 Backbone 相伴的空間照片與故事，與我們一同留存這份專屬回憶。</p>
+      <div class="hero-cta">
+        <a class="btn" href="#submit" id="heroCta">我要投稿 <i>→</i></a>
+        <span class="cta-note" id="ctaNote">—— 12/31 前參與故事徵集，即有機會獲得萬元購物金。</span>
+      </div>
+    </div>
+    <div class="count"><b id="count">0</b><span class="eyebrow">則故事已上牆</span></div>
+  </div></div>
+  <div class="hud"><span class="mono">拖拉看看 ↔</span><button type="button" id="replay">REPLAY</button></div>
+</section>
+
+<!-- ===== 01 故事牆 ===== -->
+<section id="stories" class="sec"><div class="wrap">
+  <div class="sec-h"><span class="eyebrow">01 / STORIES 故事牆</span><span class="mono" id="countMono">0 STORIES</span></div>
+  <div class="filters">
+    <label class="sel"><span class="sr">依產品篩選</span>
+      <select id="fProd"><option value="">全部產品</option></select>
+    </label>
+    <form class="search" id="searchForm" role="search">
+      <label for="q" class="sr">搜尋故事編號或暱稱</label>
+      <span class="mono">#</span><input id="q" type="search" inputmode="search" placeholder="輸入故事編號或暱稱" autocomplete="off">
+      <button type="submit" aria-label="搜尋"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+    </form>
+  </div>
+  <div class="wall" id="wall" aria-live="polite"></div>
+  <p class="empty" id="empty" hidden>找不到符合的故事。</p>
+  <div class="more"><button class="btn-ghost" id="more" type="button">載入更多故事</button></div>
+</div></section>
+
+<!-- ===== 02 投稿 ===== -->
+<section id="submit" class="sec"><div class="wrap">
+  <div class="sub-l">
+    <div class="sec-h"><span class="eyebrow">02 / SUBMIT 我要投稿</span></div>
+    <h2>加上你的故事，<br><span class="hl">挺好的</span>。</h2>
+    <img class="spine" src="/assets/spine.svg" alt="" width="120" height="230">
+  </div>
+
+  <form id="form" class="story-form" novalidate>
+    <div class="closed-note" id="closedNote" hidden></div>
+
+    <div class="field" id="fPhoto">
+      <div class="polaroid">
+        <label class="drop" id="drop">
+          <input type="file" id="photo" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" aria-label="上傳一張有 Backbone 相伴的空間照片">
+          <img id="prev" alt="">
+          <svg class="hint" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="16" cy="9" r="1.5"/></svg>
+          <span class="hint">上傳一張有 Backbone 相伴<br>的空間照片</span>
+          <span class="swap">換一張</span>
+        </label>
+        <span class="mono cap">SET UP / <span id="pvNo">#----</span></span>
+      </div>
+      <span class="help">JPG／PNG／HEIC，10MB 以內。<br>請上傳本人拍攝的真實照片，禁止使用 AI 生成圖片。</span>
+      <span class="err">請上傳一張照片</span>
+    </div>
+
+    <div class="sentences">
+      <div class="sentence">
+        <span class="nw"><span>我是</span><span class="field inl" id="fName"><input type="text" id="name" placeholder="暱稱" autocomplete="nickname" maxlength="12" size="6"><span class="err">請填寫</span></span><span>，</span></span>
+        <span class="nw"><span class="field inl" id="fSince"><select id="since"><option value="">哪一年</option></select><span class="err">請選取</span></span><span>開始用</span></span>
+        <span class="nw"><span class="field inl" id="fProduct"><select id="product"><option value="">哪一款桌／椅</option></select><span class="err">請選取</span></span><span>。</span></span>
+      </div>
+
+      <div class="sentence">
+        <span>這十年，它</span>
+        <span class="field blk" id="fStory"><textarea id="story" rows="2" maxlength="50" placeholder="陪我……（50 字以內）"></textarea><span class="count-s"><span id="cStory">0</span>/50</span><span class="err">請填入你的故事</span></span>
+      </div>
+
+      <div class="sentence">
+        <span>用一句話說，就是</span>
+        <span class="nw grow"><span class="field inl grow" id="fTitle"><input type="text" id="title" maxlength="10" placeholder="挺好的……" size="12"><span class="count-s"><span id="cTitle">0</span>/10</span><span class="err">請填入一句標語</span></span><span>。</span></span>
+      </div>
+    </div>
+
+    <div class="contact">
+      <span class="lbl">請填入</span>
+      <div class="field inl" id="fEmail"><input type="email" id="email" placeholder="Email" autocomplete="email" inputmode="email" maxlength="120"><span class="err" id="eEmail">Email格式錯誤</span></div>
+      <div class="field inl" id="fPhone"><input type="tel" id="phone" placeholder="手機號碼" autocomplete="tel" inputmode="numeric" maxlength="10"><span class="err" id="ePhone">手機號碼格式錯誤</span></div>
+      <span class="note">※以上欄位不會公開，僅作為抽獎聯繫使用。</span>
+    </div>
+
+    <div class="agree field" id="fAgree">
+      <label><input type="checkbox" id="agree"><span>我已閱讀<a href="#privacy" id="privacyLink">隱私權政策</a>，並同意投稿資料用於 Backbone 十週年活動與展示。</span></label>
+      <span class="err">請勾選</span>
+    </div>
+
+    <input type="text" name="website" id="hp" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
+    <div id="turnstile"></div>
+
+    <div class="send">
+      <span class="mono" id="sendState" aria-live="polite"></span>
+      <button class="btn" type="submit" id="sendBtn">送出故事 <i>→</i></button>
+    </div>
+  </form>
+</div></section>
+
+<!-- ===== 03 活動規則 ===== -->
+<section id="rules" class="sec"><div class="wrap">
+  <div class="sec-h"><span class="eyebrow">03 / RULES 活動規則與條款</span><span class="mono" id="period">2026/11/6 — 2026/12/31 23:59</span></div>
+
+  <div class="prizes">
+    <article class="prize">
+      <span class="mono">AWARD 01 · 共 2 名</span>
+      <h3>十週年特別獎</h3>
+      <b class="amt">10,000<small> 元購物金</small></b>
+      <p>由 Backbone 團隊選出最具共鳴的故事。</p>
+    </article>
+    <article class="prize">
+      <span class="mono">AWARD 02 · 共 3 名</span>
+      <h3>一路相挺獎</h3>
+      <b class="amt">5,000<small> 元購物金</small></b>
+      <p>符合活動規則並完成投稿者，即獲得抽獎資格。</p>
+    </article>
+    <article class="prize">
+      <span class="mono">AWARD 03 · 共 5 名</span>
+      <h3>社群加碼獎</h3>
+      <b class="amt sm">十週年限定捲尺<small> 乙個</small></b>
+      <p>完成故事投稿，並將故事卡分享至 IG 限時動態並 Tag @backbone.tw，於活動貼文下方留言，即獲得抽獎資格。</p>
+    </article>
+  </div>
+
+  <div class="terms">
+    <details open>
+      <summary><span class="mono">01</span>活動規則與參加資格</summary>
+      <ol>
+        <li>活動日期：<span data-cfg="period">2026/11/6 — 2026/12/31 23:59</span>。</li>
+        <li>參與方式：上傳一張空間照片與一段故事簡述，填寫完整聯絡資訊（Email、手機號碼），完成投稿後即可獲得「十週年特別獎評選資格」與「一路相挺獎的抽獎資格」。</li>
+        <li>相同照片、Email 及手機號碼限投稿一次，重複投稿者將不予重複計入抽獎資格。</li>
+        <li>社群加碼獎參加機制：
+          <ul>
+            <li>下載投稿完成頁生成之專屬故事卡片，發布至 IG 限時動態，並標記 @backbone.tw。</li>
+            <li>前往官方 IG 指定活動貼文留言。</li>
+            <li>請於發布後自行螢幕截圖（或保留 IG 個人典藏紀錄）。得獎名單公布後，我們將透過 IG 留言或私訊聯繫，請於指定時間內出示含發布與標記之截圖憑證以供核銷。</li>
+          </ul>
+        </li>
+      </ol>
+    </details>
+    <details>
+      <summary><span class="mono">02</span>活動注意事項</summary>
+      <ol>
+        <li>創作真實性與 AI 規範：本活動旨在記錄真實生活體驗，作品嚴禁使用生成式 AI（Artificial Intelligence）繪製照片或產生圖片，亦不得有惡意灌水或一人多投之行為。如遇上述狀況，Backbone 保有直接取消該參加者資格及中獎權利之最終決定權，恕不另行通知。</li>
+        <li>著作權與肖像權授權：參加者保證所上傳之照片與文字皆為本人原創，無侵害他人智慧財產權或隱私權之情事，且照片中所出現之人物皆已獲得其授權同意。上傳投稿即視為同意無償授權 Backbone 於活動期間及後續品牌行銷（包含但不限於官網、社群平台、實體展覽）進行非商業性之刊登、重製、合理裁切編輯與推廣使用。</li>
+        <li>獎項審核與領取：
+          <ul>
+            <li>得獎名單將於 <span data-cfg="announceDate">2027/1/11（一）</span> 於官方社群公布。</li>
+            <li>中獎者須於 <span data-cfg="claimDeadline">2027/1/22（五）</span> 前回覆兌獎相關資料與憑證（如限動典藏截圖），逾期未回覆或憑證不符者，視同放棄得獎資格。</li>
+            <li>本活動所有獎項以實物為準，不得要求折換現金、轉讓他人或更換其他等值商品，獎項運送範圍僅限台灣、澎湖、金門、馬祖地區。</li>
+          </ul>
+        </li>
+        <li>機會中獎稅與申報：
+          <ul>
+            <li>機會中獎稅：依稅法規定，獎項價值超過 20,000 元以上，須負擔 10% 機會中獎稅；非中華民國國境內居住之國人（即在中華民國境內居住未達 183 天之本國人及外國人）不論得獎人所得之金額，須就中獎所得扣繳 20% 機會中獎稅。扣繳稅款未超過 2,000 元，免扣繳（外籍人士不適用）。</li>
+            <li>所得稅：依稅法規定，中獎贈品或獎金都算所得，全年所中獎的獎品價值超過市價 1,000 元，年度報稅時必須計入個人所得，故中獎人於領獎後，所得稅徵收前會收到本公司所發出的扣繳憑單。</li>
+            <li>中獎者若不願意配合上述規範，則視為自動棄權，不具得獎資格，且本公司將不另行公告備取之中獎者。</li>
+          </ul>
+        </li>
+      </ol>
+    </details>
+    <details id="privacy">
+      <summary><span class="mono">03</span>個人資料保護與隱私權聲明</summary>
+      <p>Backbone（以下簡稱本品牌）重視您的個人隱私。為了辦理「故事徵集活動」，我們將依個人資料保護法規定蒐集、處理及利用您的個人資料：</p>
+      <ol>
+        <li>蒐集目的：僅用於本活動參加資格核對、重複報名排除、中獎通知、身分核對、獎品發放及相關品牌行銷活動。</li>
+        <li>資料類別：姓名、電子郵件地址、行動電話號碼、社群帳號資訊及您所上傳之照片與故事內容。</li>
+        <li>利用期間與地區：自本活動開始日至活動結束後獎項發放完成止（部分上傳故事將依上述授權進行行銷展示）；利用地區僅限於台灣、澎湖、金門、馬祖地區。</li>
+        <li>參加者權利：您得就提供之個人資料向本品牌行使查閱、補充、更正、停止蒐集處理或刪除之權利。若選擇不提供相關資料，將無法參與本活動及領取獎項。</li>
+      </ol>
+    </details>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <img src="/assets/mark-10th.svg" alt="10th anniversary" class="f-mark" width="64" height="68">
+  <div class="f-slogan"><b><span class="ul">挺好的</span></b>，十年。<small><b>10 YEARS</b> IN THE MAKING.</small></div>
+  <nav aria-label="頁尾"><a id="fMain" href="#" target="_blank" rel="noopener">十週年主站</a><a id="fShop" href="#" target="_blank" rel="noopener">商城</a><a id="fIg" href="#" target="_blank" rel="noopener">Instagram</a><a href="#privacy" class="toPrivacy">隱私權政策</a></nav>
+  <span class="mono">BACKBONE / 2016—2026</span>
+</div></footer>
+
+<a class="sticky" id="sticky" href="#submit">我要投稿 <i>↓</i></a>
+<div class="demo" id="demoTag" hidden>DEMO · 尚未連線後台，資料只存在這個瀏覽器</div>
+
+<!-- 故事燈箱 -->
+<div class="ov" id="lbov" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+  <div class="lb">
+    <div class="lb-img"><img id="lbImg" alt=""></div>
+    <div class="lb-r">
+      <button class="x" id="lbX" aria-label="關閉">✕</button>
+      <span class="mono" id="lbMeta"></span>
+      <h2 id="lbTitle"></h2>
+      <div class="who"><span id="lbName"></span><span class="mono" id="lbSince"></span></div>
+      <p id="lbText"></p>
+      <div class="foot">
+        <div class="lb-nav"><button class="navb mono" id="lbPrev">← 上一則</button><button class="navb mono" id="lbNext">下一則 →</button></div>
+        <div class="lb-act"><button class="btn-ghost sm" id="lbShare" type="button">分享這則</button><a class="btn sm" href="#submit" id="lbGo">我也要投稿 <i>→</i></a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 投稿完成 -->
+<div class="ov" id="doneov" role="dialog" aria-modal="true" aria-labelledby="doneH">
+  <div class="done">
+    <button class="x" id="doneX" aria-label="關閉">✕</button>
+    <div class="done-l">
+      <span class="eyebrow">complete</span>
+      <h2 id="doneH">感謝這十年有你相伴！<br>有你在，<span class="hl">挺好的</span>！</h2>
+      <div class="no"><b id="doneNo">#0000</b><span class="eyebrow">你的故事編號</span></div>
+      <p><span id="announceLine">Backbone 將於 2027/1/11 於官方 FB／IG 公布得獎者</span>，致贈給願意與我們分享生活的你。</p>
+      <div class="bonus">
+        <span class="b-h">◆ 社群分享加碼抽｜十週年限定捲尺 ◆</span>
+        <ol>
+          <li>點擊下方按鈕，下載你的專屬故事卡</li>
+          <li>分享至 IG 限時動態，並 Tag <b>@backbone.tw</b></li>
+          <li>至<a id="igPostLink" href="#" target="_blank" rel="noopener">活動貼文</a>下方留言</li>
+        </ol>
+        <span>即享 十週年限定捲尺 抽獎資格。</span>
+        <small>※請將限動畫面螢幕「截圖保存」，作為日後領獎憑證。</small>
+      </div>
+      <div class="row">
+        <button class="btn" type="button" id="save">儲存故事卡 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"/><path d="M6 12l6 6 6-6"/><path d="M4 20h16"/></svg></button>
+        <button class="btn-ghost" type="button" id="shareIg">分享至 Instagram</button>
+      </div>
+      <a href="#stories" class="mono back" id="doneGo">回到故事牆 →</a>
+    </div>
+    <div class="cards">
+      <div class="chips" role="group" aria-label="故事卡樣式"><button class="chip" type="button" data-style="A" aria-pressed="true">A 海報</button><button class="chip" type="button" data-style="B" aria-pressed="false">B 牆</button><button class="chip" type="button" data-style="C" aria-pressed="false">C 黑</button></div>
+      <div class="card-row">
+        <figure><span class="eyebrow">限動 · 1080 × 1920</span><img id="cardS" width="270" height="480" alt="限時動態故事卡"></figure>
+        <figure><span class="eyebrow">貼文 · 1080 × 1350</span><img id="cardP" width="160" height="200" alt="貼文故事卡"><figcaption class="mono">兩個尺寸一起存</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="/config.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js" defer></script>
+<script src="/app.js" defer></script>
+</body>
+</html>
